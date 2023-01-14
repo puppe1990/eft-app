@@ -94,8 +94,8 @@ const handleFeelingChange = (feeling) => {
   return (
   <div className="App">
   <h1>EFT Tapping</h1>
-  <h2>Current Point: {currentPoint}</h2>
-  <h2>Current Phrase: {currentPhrase}</h2>
+  <h2 class="point">Current Point: {currentPoint}</h2>
+  <h2 class="phrase">Current Phrase: {currentPhrase}</h2>
   <label>
   On a scale from 0 to 10, how do you feel now?
 <input type="number" min="0" max="10" onChange={e => handleFeelingChange(e.target.value)} />

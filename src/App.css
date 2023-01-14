@@ -1,38 +1,68 @@
+/* General styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* App background color */
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  background-color: #ADD8E6; /* Pale blue color */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  height: 100vh;
 }
 
-.App-link {
-  color: #61dafb;
+
+/* Header styles */
+h1 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Point and phrase styles */
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Feeling input styles */
+label {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+input[type="number"] {
+  padding: 12px 20px;
+  font-size: 18px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+
+/* Completion message styles */
+.completion-message {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Phrase styles */
+.phrase {
+  font-size: 24px;
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 2px solid #4db6ac; /* Color chosen to create a calm feeling */
+  border-radius: 8px;
+}
+
+/* Point styles */
+.point {
+  font-size: 24px;
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 2px solid #4db6ac; /* Color chosen to create a calm feeling */
+  border-radius: 8px;
 }
