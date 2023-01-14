@@ -53,7 +53,7 @@ function App() {
 
   const handleFeelingChange = (feeling) => {
     setCurrentFeeling(feeling);
-    if (feeling === 0) {
+    if (currentFeeling === 0) {
       setEndTime(Date.now());
       setIsRoutineActive(false);
     }
@@ -65,24 +65,15 @@ function App() {
       if (currentPoint === "Karate chop") {
         intervalId = setInterval(() => {
           handleNext();
-        }, 12000);
+        }, 10000);
       } else {
         intervalId = setInterval(() => {
           handleNext();
-        }, 7000);
+        }, 5000);
       }
       return () => clearInterval(intervalId);
     }
   }, [isRoutineActive, handleNext, currentPoint]);
-
-  useEffect(() => {
-    if (isRoutineActive) {
-      const intervalId = setInterval(() => {
-        handleNext();
-      }, 3000);
-      return () => clearInterval(intervalId);
-    }
-  }, [isRoutineActive, handleNext]);
 
   if (!isRoutineActive) {
     const timeTaken = (endTime - startTime) / 1000; // in seconds
