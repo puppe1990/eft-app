@@ -1,56 +1,107 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
-import EFT from './EFT';
+
+const POINTS = [
+  'Karate chop',
+  'Top of head',
+  'Eyebrow',
+  'Side of eye',
+  'Under eye',
+  'Under nose',
+  'Chin',
+  'Collarbone',
+  'Chest',
+  'Underarm'
+];
+
+const CUSTOM_PHRASES = [
+  "Even though I have this fear of public speaking, I deeply and completely accept myself.",
+  "Even though I have this headache, I deeply and completely accept myself.",
+  "Even though I have this traumatic memory, I deeply and completely accept myself."
+];
+
+const MOTIVATIONAL_PHRASES = [
+  "You've made a great progress today!",
+  "Keep up the good work!",
+  "You're getting stronger every day!"
+];
 
 function App() {
-  const [issue, setIssue] = useState('');
-  const [feeling, setFeeling] = useState(0);
-  const [phrases, setPhrases] = useState(EFT.DEFAULT_PHRASES);
-  const [isCustom, setIsCustom] = useState(false);
+  const [currentPhrase, setCurrentPhrase] = useState(CUSTOM_PHRASES[0]);
+  const [currentPoint, setCurrentPoint] = useState(POINTS[0]);
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
+  const [currentFeeling, setCurrentFeeling] = useState(null);
+  const [isRoutineActive, setIsRoutineActive] = useState(true);
 
-  const handleIssueChange = event => {
-    setIssue(event.target.value);
-  }
-
-  const handleFeelingChange = event => {
-    setFeeling(event.target.value);
-  }
-
-  const handleCustomChange = event => {
-    if (event.target.checked) {
-      setIsCustom(event.target.checked);
-      setPhrases(EFT.CUSTOM_PHRASES);
+  const handleNext = () => {
+    const nextIndex = CUSTOM_PHRASES.indexOf(currentPhrase) + 1;
+    if (nextIndex === CUSTOM_PHRASES.length) {
+    setCurrentPhrase(CUSTOM_PHRASES[0]);
     } else {
-      setIsCustom(false);
-      setPhrases(EFT.DEFAULT_PHRASES);
+    setCurrentPhrase(CUSTOM_PHRASES[nextIndex]);
     }
-  }
+    const nextPoint = POINTS.indexOf(currentPoint) + 1;
+if (nextPoint === POINTS.length) {
+  setCurrentPoint(POINTS[0]);
+} else {
+  setCurrentPoint(POINTS[nextPoint]);
+}
 
-  const handleTap = () => {
-    EFT.tap(issue, feeling, phrases, isCustom);
-  }
+if (!startTime) {
+  setStartTime(Date.now());
+}
+};
 
+const handleFeelingChange = (feeling) => {
+  setCurrentFeeling(feeling);
+  if (feeling === 0) {
+  setEndTime(Date.now());
+  setIsRoutineActive(false);
+  }
+  };
+  
+  useEffect(() => {
+    if (isRoutineActive) {
+      const intervalId = setInterval(() => {
+        handleNext();
+      }, 3000);
+      return () => clearInterval(intervalId);
+    }
+  }, [isRoutineActive, handleNext]);
+  
+  useEffect(() => {
+  if (isRoutineActive) {
+  const intervalId = setInterval(() => {
+  handleNext();
+  }, 3000);
+  return () => clearInterval(intervalId);
+  }
+  }, [isRoutineActive, handleNext]);
+  
+  if (!isRoutineActive) {
+  const timeTaken = (endTime - startTime) / 1000; // in seconds
+  const randomPhrase = MOTIVATIONAL_PHRASES[Math.floor(Math.random() * MOTIVATIONAL_PHRASES.length)];
   return (
-    <div className="App">
-      <h1>EFT Tapping</h1>
-      <label>
-        Issue or emotion to focus on:
-        <input type="text" value={issue} onChange={handleIssueChange} />
-      </label>
-      <br />
-      <label>
-        Feeling (on a scale from 0 to 10):
-        <input type="number" min="0" max="10" value={feeling} onChange={handleFeelingChange} />
-      </label>
-      <br />
-      <label>
-        Use custom phrases?
-        <input type="checkbox" checked={isCustom} onChange={handleCustomChange} />
-      </label>
-      <br />
-      <button onClick={handleTap}>Tap</button>
-    </div>
+  <div className="App">
+  <h1>EFT Tapping</h1>
+  <h2>{randomPhrase}</h2>
+  <h2>Time taken: {timeTaken} seconds</h2>
+  </div>
   );
+  }
+  
+  return (
+  <div className="App">
+  <h1>EFT Tapping</h1>
+  <h2>Current Point: {currentPoint}</h2>
+  <h2>Current Phrase: {currentPhrase}</h2>
+  <label>
+  On a scale from 0 to 10, how do you feel now?
+<input type="number" min="0" max="10" onChange={e => handleFeelingChange(e.target.value)} />
+</label>
+</div>
+);
 }
 
 export default App;
