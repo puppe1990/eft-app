@@ -31,8 +31,11 @@ function App() {
   const [endTime, setEndTime] = useState(null);
   const [currentFeeling, setCurrentFeeling] = useState(null);
   const [isRoutineActive, setIsRoutineActive] = useState(true);
+  const [timeRemaining, setTimeRemaining] = useState(10000);
+  const formattedTime = new Date(timeRemaining).toISOString().substr(14, 5);
 
   const handleNext = () => {
+    setTimeRemaining(5000) 
     const nextIndex = CUSTOM_PHRASES.indexOf(currentPhrase) + 1;
     if (nextIndex === CUSTOM_PHRASES.length) {
       setCurrentPhrase(CUSTOM_PHRASES[0]);
@@ -45,7 +48,6 @@ function App() {
     } else {
       setCurrentPoint(POINTS[nextPoint]);
     }
-
     if (!startTime) {
       setStartTime(Date.now());
     }
@@ -62,18 +64,18 @@ function App() {
   useEffect(() => {
     if (isRoutineActive) {
       let intervalId = null;
-      if (currentPoint === "Karate chop") {
-        intervalId = setInterval(() => {
+      intervalId = setInterval(() => {
+        setTimeRemaining(timeRemaining - 1000);
+        if (timeRemaining === 0) {
+          clearInterval(intervalId);
           handleNext();
-        }, 10000);
-      } else {
-        intervalId = setInterval(() => {
-          handleNext();
-        }, 5000);
-      }
+        }
+      }, 1000);
       return () => clearInterval(intervalId);
     }
-  }, [isRoutineActive, handleNext, currentPoint]);
+  }, [isRoutineActive, timeRemaining]);
+
+
 
   if (!isRoutineActive) {
     const timeTaken = (endTime - startTime) / 1000; // in seconds
@@ -95,6 +97,7 @@ function App() {
       <h1>EFT Tapping</h1>
       <h2 class="point">Current Point: {currentPoint}</h2>
       <h2 class="phrase">Current Phrase: {currentPhrase}</h2>
+      <div class="timer">Time remaining: {formattedTime}</div>
       <label>
         On a scale from 0 to 10, how do you feel now?
         <input
