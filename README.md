@@ -2,6 +2,9 @@
 
 This app is designed to help users practice the Emotional Freedom Technique (EFT), also known as tapping. EFT is a form of psychological acupressure that involves tapping on specific points on the body while focusing on a specific issue or emotion.
 
+![image](https://user-images.githubusercontent.com/8432835/213873858-9456baa3-b48e-4eec-915f-512b8301c1b4.png)
+
+
 ## How to use the app
 Enter the issue or emotion that you want to focus on in the "Issue or emotion to focus on" field.
 Enter your current feeling level (on a scale from 0 to 10) in the "Feeling (on a scale from 0 to 10)" field.
