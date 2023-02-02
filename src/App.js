@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./App.css";
 
 const POINTS = [
@@ -15,7 +15,7 @@ const POINTS = [
 ];
 
 const CUSTOM_PHRASES = [
-
+  
 ];
 
 function App() {
@@ -30,7 +30,7 @@ function App() {
   const [stopwatch, setStopwatch] = useState(0);
   const formattedTime = new Date(timeRemaining).toISOString().substr(14, 5);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     setTimeRemaining(5000);
     const nextIndex = CUSTOM_PHRASES.indexOf(currentPhrase) + 1;
     if (nextIndex === CUSTOM_PHRASES.length) {
@@ -47,7 +47,7 @@ function App() {
     if (!startTime) {
       setStartTime(Date.now());
     }
-  };
+  }, [currentPhrase, currentPoint, startTime]);
 
   const handleFeelingChange = (feeling) => {
     setCurrentFeeling(feeling);
@@ -84,7 +84,7 @@ function App() {
       }, 1000);
       return () => clearInterval(intervalId);
     }
-  }, [isRoutineActive, timeRemaining, isPlaying, stopwatch]);
+  }, [isRoutineActive, timeRemaining, isPlaying, stopwatch, handleNext]);
 
   if (!isRoutineActive) {
     const timeTaken = (endTime - startTime) / 1000;
