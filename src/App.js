@@ -15,14 +15,8 @@ const POINTS = [
 ];
 
 const CUSTOM_PHRASES = [
-  'Even though I struggle with financial abundance, I deeply and completely accept myself.','I have a hard time believing I deserve financial abundance.',"I feel like I'm not worthy of abundance.","I don't know how to attract abundance.","I'm scared that I'll never have enough money.","I'm always worried about money.","I don't trust that I can have abundance.","I don't believe I deserve abundance.","I'm worried that I'll never be able to afford the things I want.","I'm always struggling to make ends meet."
-];
-
-const MOTIVATIONAL_PHRASES = [
-  "You've made a great progress today!",
-  "Keep up the good work!",
-  "You're getting stronger every day!",
-];
+  
+]
 
 function App() {
   const [currentPhrase, setCurrentPhrase] = useState(CUSTOM_PHRASES[0]);
@@ -35,7 +29,7 @@ function App() {
   const formattedTime = new Date(timeRemaining).toISOString().substr(14, 5);
 
   const handleNext = () => {
-    setTimeRemaining(5000) 
+    setTimeRemaining(5000);
     const nextIndex = CUSTOM_PHRASES.indexOf(currentPhrase) + 1;
     if (nextIndex === CUSTOM_PHRASES.length) {
       setCurrentPhrase(CUSTOM_PHRASES[0]);
@@ -75,18 +69,11 @@ function App() {
     }
   }, [isRoutineActive, timeRemaining]);
 
-
-
   if (!isRoutineActive) {
-    const timeTaken = (endTime - startTime) / 1000; // in seconds
-    const randomPhrase =
-      MOTIVATIONAL_PHRASES[
-        Math.floor(Math.random() * MOTIVATIONAL_PHRASES.length)
-      ];
+    const timeTaken = (endTime - startTime) / 1000;
     return (
       <div className="App">
         <h1>EFT Tapping</h1>
-        <h2>{randomPhrase}</h2>
         <h2>Time taken: {timeTaken} seconds</h2>
       </div>
     );
