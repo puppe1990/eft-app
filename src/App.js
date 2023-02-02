@@ -15,8 +15,8 @@ const POINTS = [
 ];
 
 const CUSTOM_PHRASES = [
-"Eu abraço a incerteza e o medo ao avançar em direção ao meu negócio dos sonhos.","Confio na minha capacidade e coragem para superar qualquer obstáculo no início do meu negócio.","Eu sou digno e capaz de ter sucesso em meu novo empreendimento comercial.","Eu escolho enfrentar meus medos e transformá-los em combustível para o sucesso do meu negócio.","Estou confiante em minha capacidade de aprender e crescer enquanto navego pelos desafios de iniciar um negócio.","Eu encaro o fracasso como uma oportunidade de crescimento e sucesso no meu negócio.","Sou antifrágil e persistente diante dos desafios de iniciar meu negócio.","Acredito na minha visão para o meu negócio e estou empenhado em torná-la realidade.","Estou aberto a receber apoio e orientação durante o processo de abertura de um negócio.","Sou forte e determinado em minha busca pelo sucesso em meu novo empreendimento.",
-]
+
+];
 
 function App() {
   const [currentPhrase, setCurrentPhrase] = useState(CUSTOM_PHRASES[0]);
@@ -27,6 +27,7 @@ function App() {
   const [isRoutineActive, setIsRoutineActive] = useState(true);
   const [timeRemaining, setTimeRemaining] = useState(10000);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [stopwatch, setStopwatch] = useState(0);
   const formattedTime = new Date(timeRemaining).toISOString().substr(14, 5);
 
   const handleNext = () => {
@@ -62,6 +63,8 @@ function App() {
 
   const handleStop = () => {
     setIsPlaying(false);
+    setStopwatch(0);
+    alert(`Total time: ${stopwatch} seconds`);
   };
 
   const handlePause = () => {
@@ -73,6 +76,7 @@ function App() {
       let intervalId = null;
       intervalId = setInterval(() => {
         setTimeRemaining(timeRemaining - 1000);
+        setStopwatch(stopwatch + 1);
         if (timeRemaining === 0) {
           clearInterval(intervalId);
           handleNext();
@@ -80,7 +84,7 @@ function App() {
       }, 1000);
       return () => clearInterval(intervalId);
     }
-  }, [isRoutineActive, timeRemaining, isPlaying]);
+  }, [isRoutineActive, timeRemaining, isPlaying, stopwatch]);
 
   if (!isRoutineActive) {
     const timeTaken = (endTime - startTime) / 1000;
@@ -102,11 +106,11 @@ function App() {
         <button className="play-button" onClick={handlePlay}>
           Play
         </button>
-        <button className="stop-button" onClick={handleStop}>
-          Stop
-        </button>
         <button className="pause-button" onClick={handlePause}>
           Pause
+        </button>
+        <button className="stop-button" onClick={handleStop}>
+          Stop
         </button>
       </div>
       <label>
