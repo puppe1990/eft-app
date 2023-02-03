@@ -15,7 +15,7 @@ const POINTS = [
 ];
 
 const CUSTOM_PHRASES = [
-  
+
 ];
 
 function App() {
@@ -43,6 +43,25 @@ function App() {
       setCurrentPoint(POINTS[0]);
     } else {
       setCurrentPoint(POINTS[nextPoint]);
+    }
+    if (!startTime) {
+      setStartTime(Date.now());
+    }
+  }, [currentPhrase, currentPoint, startTime]);
+
+  const handleBack = useCallback(() => {
+    setTimeRemaining(5000);
+    const previousIndex = CUSTOM_PHRASES.indexOf(currentPhrase) - 1;
+    if (previousIndex === -1) {
+      setCurrentPhrase(CUSTOM_PHRASES[CUSTOM_PHRASES.length - 1]);
+    } else {
+      setCurrentPhrase(CUSTOM_PHRASES[previousIndex]);
+    }
+    const previousPoint = POINTS.indexOf(currentPoint) - 1;
+    if (previousPoint === -1) {
+      setCurrentPoint(POINTS[POINTS.length - 1]);
+    } else {
+      setCurrentPoint(POINTS[previousPoint]);
     }
     if (!startTime) {
       setStartTime(Date.now());
@@ -111,6 +130,12 @@ function App() {
         </button>
         <button className="stop-button" onClick={handleStop}>
           Stop
+        </button>
+        <button className="back-button" onClick={handleBack}>
+          Back
+        </button>
+        <button className="next-button" onClick={handleNext}>
+          Next
         </button>
       </div>
       <label>
