@@ -17,6 +17,7 @@ const POINTS = [
 const CUSTOM_PHRASES = [
   'Even though I struggle with financial abundance, I deeply and completely accept myself.','I have a hard time believing I deserve financial abundance.',"I feel like I'm not worthy of abundance.","I don't know how to attract abundance.","I'm scared that I'll never have enough money.","I'm always worried about money.","I don't trust that I can have abundance.","I don't believe I deserve abundance.","I'm worried that I'll never be able to afford the things I want.","I'm always struggling to make ends meet."
 ]
+
 function App() {
   const [currentPhrase, setCurrentPhrase] = useState(CUSTOM_PHRASES[0]);
   const [currentPoint, setCurrentPoint] = useState(POINTS[0]);
@@ -146,6 +147,12 @@ function App() {
           onChange={(e) => handleFeelingChange(e.target.value)}
         />
       </label>
+      <div className="footer">
+        <p>
+          This app is designed to help you practice Emotional Freedom Technique (EFT) tapping. EFT is a self-help technique that involves tapping on specific points on the body while focusing on a specific issue or problem. The goal of EFT is to release negative emotions and beliefs, and to promote positive thinking and self-acceptance. To use this app, simply follow the prompts on the screen and tap on the appropriate points on your body. If you're not familiar with EFT tapping, we recommend that you consult a licensed therapist or health professional for more information.
+        </p>
+        <p>Contact: <a href="mailto: matheus.puppe@gmail.com">Send Email</a></p>
+      </div>
     </div>
   );
 }
