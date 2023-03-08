@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 const POINTS = [
@@ -29,6 +30,8 @@ function App() {
   const [isPlaying, setIsPlaying] = useState(true);
   const [stopwatch, setStopwatch] = useState(0);
   const formattedTime = new Date(timeRemaining).toISOString().substr(14, 5);
+  const formatteStopWatch = new Date(stopwatch * 1000).toLocaleTimeString([], {minute: '2-digit', second: '2-digit'});
+
 
   const handleNext = useCallback(() => {
     setTimeRemaining(5000);
@@ -116,48 +119,90 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <h1>EFT Tapping</h1>
-      <h2 class="point">Current Point: {currentPoint}</h2>
-      <h2 class="phrase">Current Phrase: {currentPhrase}</h2>
-      <div class="timer">Time remaining: {formattedTime}</div>
-      <div className="button-container">
-        <button className="play-button" onClick={handlePlay}>
-          Play
-        </button>
-        <button className="pause-button" onClick={handlePause}>
-          Pause
-        </button>
-        <button className="stop-button" onClick={handleStop}>
-          Stop
-        </button>
-        <button className="back-button" onClick={handleBack}>
-          Back
-        </button>
-        <button className="next-button" onClick={handleNext}>
-          Next
-        </button>
+    <div className="container">
+      <h1 className="text-center mb-4">EFT Tapping</h1>
+      <div className="row justify-content-center">
+        <div className="col-md-6 mb-4">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Point</th>
+                <th>Phrase</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="text-primary">{currentPoint}</td>
+                <td className="text-primary">
+                  <div style={{ height: "120px", overflow: "auto" }}>
+                    {currentPhrase}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div className="col-md-6 mb-4">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Timer</th>
+                <th>Feeling Scale</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="text-primary fs-1">{formatteStopWatch}</td>
+                <td>
+                  <label htmlFor="feeling-select">
+                    On a scale from 0 to 10, how do you feel now?
+                  </label>
+                  <select
+                    id="feeling-select"
+                    className="form-control mx-auto mt-2"
+                    onChange={(e) => handleFeelingChange(e.target.value)}
+                  >
+                    {[...Array(11).keys()].map((num) => (
+                      <option key={num} value={num}>
+                        {num}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="mt-3">
+                    Position: {CUSTOM_PHRASES.indexOf(currentPhrase) + 1} / {CUSTOM_PHRASES.length}
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <p>
-        {CUSTOM_PHRASES.indexOf(currentPhrase) + 1} / {CUSTOM_PHRASES.length}
-      </p>
-      <label>
-        On a scale from 0 to 10, how do you feel now?
-        <input
-          type="number"
-          min="0"
-          max="10"
-          onChange={(e) => handleFeelingChange(e.target.value)}
-        />
-      </label>
-      <div className="footer">
-        <p>
-          This app is designed to help you practice Emotional Freedom Technique (EFT) tapping. EFT is a self-help technique that involves tapping on specific points on the body while focusing on a specific issue or problem. The goal of EFT is to release negative emotions and beliefs, and to promote positive thinking and self-acceptance. To use this app, simply follow the prompts on the screen and tap on the appropriate points on your body. If you're not familiar with EFT tapping, we recommend that you consult a licensed therapist or health professional for more information.
-        </p>
-        <p>Contact: <a href="mailto: matheus.puppe@gmail.com">Send Email</a></p>
+      <div className="row justify-content-center">
+        <div className="col-md-12 text-center mb-4">
+          <div className="timer mb-2">Time remaining: {formattedTime}</div>
+          <div className="button-container">
+            <button className="btn btn-primary mx-1" onClick={handlePlay}>
+              Play
+            </button>
+            <button className="btn btn-primary mx-1" onClick={handlePause}>
+              Pause
+            </button>
+            <button className="btn btn-primary mx-1" onClick={handleStop}>
+              Stop
+            </button>
+            <button className="btn btn-primary mx-1" onClick={handleBack}>
+              Back
+            </button>
+            <button className="btn btn-primary mx-1" onClick={handleNext}>
+              Next
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
+
+
 }
 
 export default App;
