@@ -138,6 +138,9 @@ function App() {
           Next
         </button>
       </div>
+      <p>
+        {CUSTOM_PHRASES.indexOf(currentPhrase) + 1} / {CUSTOM_PHRASES.length}
+      </p>
       <label>
         On a scale from 0 to 10, how do you feel now?
         <input
