@@ -134,7 +134,7 @@ function App() {
               <tr>
                 <td className="text-primary">{currentPoint}</td>
                 <td className="text-primary">
-                  <div style={{ height: "120px", overflow: "auto" }}>
+                  <div style={{ height: "100%", overflow: "auto", fontSize: "30px" }}>
                     {currentPhrase}
                   </div>
                 </td>
