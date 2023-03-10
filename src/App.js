@@ -30,8 +30,10 @@ function App() {
   const [isPlaying, setIsPlaying] = useState(true);
   const [stopwatch, setStopwatch] = useState(0);
   const formattedTime = new Date(timeRemaining).toISOString().substr(14, 5);
-  const formatteStopWatch = new Date(stopwatch * 1000).toLocaleTimeString([], {minute: '2-digit', second: '2-digit'});
-
+  const formatteStopWatch = new Date(stopwatch * 1000).toLocaleTimeString([], {
+    minute: "2-digit",
+    second: "2-digit",
+  });
 
   const handleNext = useCallback(() => {
     setTimeRemaining(5000);
@@ -86,7 +88,7 @@ function App() {
   const handleStop = () => {
     setIsPlaying(false);
     setStopwatch(0);
-    alert(`Total time: ${stopwatch} seconds`);
+    alert(`Total time: ${formatteStopWatch}`);
   };
 
   const handlePause = () => {
@@ -134,7 +136,13 @@ function App() {
               <tr>
                 <td className="text-primary">{currentPoint}</td>
                 <td className="text-primary">
-                  <div style={{ height: "100%", overflow: "auto", fontSize: "30px" }}>
+                  <div
+                    style={{
+                      height: "100%",
+                      overflow: "auto",
+                      fontSize: "30px",
+                    }}
+                  >
                     {currentPhrase}
                   </div>
                 </td>
@@ -169,7 +177,8 @@ function App() {
                     ))}
                   </select>
                   <p className="mt-3">
-                    Position: {CUSTOM_PHRASES.indexOf(currentPhrase) + 1} / {CUSTOM_PHRASES.length}
+                    Position: {CUSTOM_PHRASES.indexOf(currentPhrase) + 1} /{" "}
+                    {CUSTOM_PHRASES.length}
                   </p>
                 </td>
               </tr>
@@ -201,8 +210,6 @@ function App() {
       </div>
     </div>
   );
-
-
 }
 
 export default App;
