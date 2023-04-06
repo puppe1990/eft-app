@@ -95,6 +95,29 @@ function App() {
     setIsPlaying(false);
   };
 
+  const handleKeyDown = useCallback(
+    (event) => {
+      if (event.keyCode === 37) {
+        // Left arrow key
+        handleBack();
+      } else if (event.keyCode === 39) {
+        // Right arrow key
+        handleNext();
+      } else if (event.keyCode === 32) {
+        // Space key
+        setIsPlaying(!isPlaying);
+      }
+    },
+    [handleBack, handleNext, isPlaying]
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleKeyDown]);
+
   useEffect(() => {
     if (isRoutineActive && isPlaying) {
       let intervalId = null;
