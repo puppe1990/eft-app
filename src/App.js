@@ -38,14 +38,16 @@ function App() {
   const handleNext = useCallback(() => {
     setTimeRemaining(5000);
     const nextIndex = CUSTOM_PHRASES.indexOf(currentPhrase) + 1;
-    if (nextIndex === CUSTOM_PHRASES.length) {
-      setCurrentPhrase(CUSTOM_PHRASES[0]);
+    if (nextIndex === -1) {
+      setCurrentPhrase(CUSTOM_PHRASES[0]); // Go to start of array
+    } else if (nextIndex === CUSTOM_PHRASES.length) {
+      setCurrentPhrase(CUSTOM_PHRASES[0]); // Reset to start of array
     } else {
       setCurrentPhrase(CUSTOM_PHRASES[nextIndex]);
     }
     const nextPoint = POINTS.indexOf(currentPoint) + 1;
     if (nextPoint === POINTS.length) {
-      setCurrentPoint(POINTS[0]);
+      setCurrentPoint(POINTS[0]); // Reset to start of array
     } else {
       setCurrentPoint(POINTS[nextPoint]);
     }
@@ -58,13 +60,13 @@ function App() {
     setTimeRemaining(5000);
     const previousIndex = CUSTOM_PHRASES.indexOf(currentPhrase) - 1;
     if (previousIndex === -1) {
-      setCurrentPhrase(CUSTOM_PHRASES[CUSTOM_PHRASES.length - 1]);
+      setCurrentPhrase(CUSTOM_PHRASES[CUSTOM_PHRASES.length - 1]); // Go to end of array
     } else {
       setCurrentPhrase(CUSTOM_PHRASES[previousIndex]);
     }
     const previousPoint = POINTS.indexOf(currentPoint) - 1;
     if (previousPoint === -1) {
-      setCurrentPoint(POINTS[POINTS.length - 1]);
+      setCurrentPoint(POINTS[POINTS.length - 1]); // Go to end of array
     } else {
       setCurrentPoint(POINTS[previousPoint]);
     }
