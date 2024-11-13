@@ -15,16 +15,7 @@ const POINTS = [
 ];
 
 const CUSTOM_PHRASES = [
-  "Even though I struggle with financial abundance, I deeply and completely accept myself.",
-  "I have a hard time believing I deserve financial abundance.",
-  "I feel like I'm not worthy of abundance.",
-  "I don't know how to attract abundance.",
-  "I'm scared that I'll never have enough money.",
-  "I'm always worried about money.",
-  "I don't trust that I can have abundance.",
-  "I don't believe I deserve abundance.",
-  "I'm worried that I'll never be able to afford the things I want.",
-  "I'm always struggling to make ends meet.",
+  "Eu libero as crenças negativas de que eu sempre preciso estar em estado de alerta constante.","Eu escolho acreditar que posso confiar em minha capacidade de lidar com ameaças reais quando elas surgirem.","Eu permito que eu mesmo relaxar e confiar em minha capacidade de proteger a mim mesmo e minha segurança.","Eu escolho liberar a ansiedade e a tensão associadas à vigilância constante.","Eu escolho acreditar que posso viver minha vida sem medo constante.","Eu me permito confiar em minhas habilidades para lidar com qualquer situação de perigo que possa surgir.","Eu escolho liberar a necessidade de controlar tudo ao meu redor e confiar no fluxo da vida.","Eu me permito confiar em minha capacidade de tomar decisões seguras e eficazes para proteger a minha segurança.","Eu escolho liberar a necessidade de estar sempre no comando e confiar em minha capacidade de lidar com o incerto.","Eu escolho acreditar em minha capacidade de viver uma vida equilibrada e segura sem a necessidade de vigilância constante.",
 ];
 
 function App() {
@@ -37,6 +28,7 @@ function App() {
   const [timeRemaining, setTimeRemaining] = useState(10000);
   const [isPlaying, setIsPlaying] = useState(true);
   const [stopwatch, setStopwatch] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const formattedTime = new Date(timeRemaining).toISOString().substr(14, 5);
   const formatteStopWatch = new Date(stopwatch * 1000)
@@ -143,6 +135,10 @@ function App() {
     }
   }, [isRoutineActive, timeRemaining, isPlaying, handleNext]);
 
+  const handleModalToggle = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
   if (!isRoutineActive) {
     const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
     return (
@@ -161,6 +157,36 @@ function App() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-center text-4xl font-bold mb-8">EFT Tapping</h1>
+      <div className="text-center mb-4">
+        <button
+          className="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded"
+          onClick={handleModalToggle}
+        >
+          View All Phrases
+        </button>
+      </div>
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold">All Phrases</h2>
+              <button
+                onClick={handleModalToggle}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="space-y-2">
+              {CUSTOM_PHRASES.map((phrase, index) => (
+                <p key={index} className="p-2 border-b">
+                  {index + 1}. {phrase}
+                </p>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
       <div className="flex flex-wrap -mx-4 justify-center">
         {/* Left Column */}
         <div className="w-full md:w-1/2 mb-8 px-4">
