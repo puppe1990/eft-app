@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 const POINTS = [
@@ -16,8 +15,17 @@ const POINTS = [
 ];
 
 const CUSTOM_PHRASES = [
-  'Even though I struggle with financial abundance, I deeply and completely accept myself.','I have a hard time believing I deserve financial abundance.',"I feel like I'm not worthy of abundance.","I don't know how to attract abundance.","I'm scared that I'll never have enough money.","I'm always worried about money.","I don't trust that I can have abundance.","I don't believe I deserve abundance.","I'm worried that I'll never be able to afford the things I want.","I'm always struggling to make ends meet."
-]
+  "Even though I struggle with financial abundance, I deeply and completely accept myself.",
+  "I have a hard time believing I deserve financial abundance.",
+  "I feel like I'm not worthy of abundance.",
+  "I don't know how to attract abundance.",
+  "I'm scared that I'll never have enough money.",
+  "I'm always worried about money.",
+  "I don't trust that I can have abundance.",
+  "I don't believe I deserve abundance.",
+  "I'm worried that I'll never be able to afford the things I want.",
+  "I'm always struggling to make ends meet.",
+];
 
 function App() {
   const [currentPhrase, setCurrentPhrase] = useState(CUSTOM_PHRASES[0]);
@@ -29,11 +37,11 @@ function App() {
   const [timeRemaining, setTimeRemaining] = useState(10000);
   const [isPlaying, setIsPlaying] = useState(true);
   const [stopwatch, setStopwatch] = useState(0);
+
   const formattedTime = new Date(timeRemaining).toISOString().substr(14, 5);
-  const formatteStopWatch = new Date(stopwatch * 1000).toLocaleTimeString([], {
-    minute: "2-digit",
-    second: "2-digit",
-  });
+  const formatteStopWatch = new Date(stopwatch * 1000)
+    .toISOString()
+    .substr(14, 5);
 
   const handleNext = useCallback(() => {
     setTimeRemaining(5000);
@@ -77,7 +85,7 @@ function App() {
 
   const handleFeelingChange = (feeling) => {
     setCurrentFeeling(feeling);
-    if (currentFeeling === 0) {
+    if (feeling === "0") {
       setEndTime(Date.now());
       setIsRoutineActive(false);
     }
@@ -124,110 +132,126 @@ function App() {
     if (isRoutineActive && isPlaying) {
       let intervalId = null;
       intervalId = setInterval(() => {
-        setTimeRemaining(timeRemaining - 1000);
-        setStopwatch(stopwatch + 1);
-        if (timeRemaining === 0) {
+        setTimeRemaining((prev) => prev - 1000);
+        setStopwatch((prev) => prev + 1);
+        if (timeRemaining <= 0) {
           clearInterval(intervalId);
           handleNext();
         }
       }, 1000);
       return () => clearInterval(intervalId);
     }
-  }, [isRoutineActive, timeRemaining, isPlaying, stopwatch, handleNext]);
+  }, [isRoutineActive, timeRemaining, isPlaying, handleNext]);
 
   if (!isRoutineActive) {
-    const timeTaken = (endTime - startTime) / 1000;
+    const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
     return (
-      <div className="App">
-        <h1>EFT Tapping</h1>
-        <h2>Time taken: {timeTaken} seconds</h2>
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="bg-white p-8 rounded shadow-md text-center">
+          <h1 className="text-3xl font-bold mb-4">EFT Tapping</h1>
+          <h2 className="text-xl">
+            Time taken:{" "}
+            <span className="text-indigo-600">{timeTaken} seconds</span>
+          </h2>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container">
-      <h1 className="text-center mb-4">EFT Tapping</h1>
-      <div className="row justify-content-center">
-        <div className="col-md-6 mb-4">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Point</th>
-                <th>Phrase</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="text-primary">{currentPoint}</td>
-                <td className="text-primary">
-                  <div
-                    style={{
-                      height: "100%",
-                      overflow: "auto",
-                      fontSize: "30px",
-                    }}
-                  >
-                    {currentPhrase}
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-center text-4xl font-bold mb-8">EFT Tapping</h1>
+      <div className="flex flex-wrap -mx-4 justify-center">
+        {/* Left Column */}
+        <div className="w-full md:w-1/2 mb-8 px-4">
+          <div className="bg-white shadow-md rounded p-6 h-full">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-700">
+              Current Point & Phrase
+            </h2>
+            <div className="mb-4">
+              <p className="text-xl text-indigo-600 font-medium">
+                {currentPoint}
+              </p>
+            </div>
+            <div className="h-48 overflow-auto">
+              <p className="text-lg text-gray-800">{currentPhrase}</p>
+            </div>
+          </div>
         </div>
-        <div className="col-md-6 mb-4">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Timer</th>
-                <th>Feeling Scale</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="text-primary fs-1">{formatteStopWatch}</td>
-                <td>
-                  <label htmlFor="feeling-select">
-                    On a scale from 0 to 10, how do you feel now?
-                  </label>
-                  <select
-                    id="feeling-select"
-                    className="form-control mx-auto mt-2"
-                    onChange={(e) => handleFeelingChange(e.target.value)}
-                  >
-                    {[...Array(11).keys()].map((num) => (
-                      <option key={num} value={num}>
-                        {num}
-                      </option>
-                    ))}
-                  </select>
-                  <p className="mt-3">
-                    Position: {CUSTOM_PHRASES.indexOf(currentPhrase) + 1} /{" "}
-                    {CUSTOM_PHRASES.length}
-                  </p>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        {/* Right Column */}
+        <div className="w-full md:w-1/2 mb-8 px-4">
+          <div className="bg-white shadow-md rounded p-6 h-full">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-700">
+              Timer & Feeling Scale
+            </h2>
+            <div className="mb-4">
+              <p className="text-4xl text-indigo-600 font-bold">
+                {formatteStopWatch}
+              </p>
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="feeling-select"
+                className="block text-sm font-medium text-gray-700"
+              >
+                On a scale from 0 to 10, how do you feel now?
+              </label>
+              <select
+                id="feeling-select"
+                className="mt-2 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                onChange={(e) => handleFeelingChange(e.target.value)}
+              >
+                <option value="">Select</option>
+                {[...Array(11).keys()].map((num) => (
+                  <option key={num} value={num}>
+                    {num}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <p className="text-sm text-gray-500">
+              Position: {CUSTOM_PHRASES.indexOf(currentPhrase) + 1} /{" "}
+              {CUSTOM_PHRASES.length}
+            </p>
+          </div>
         </div>
       </div>
-      <div className="row justify-content-center">
-        <div className="col-md-12 text-center mb-4">
-          <div className="timer mb-2">Time remaining: {formattedTime}</div>
-          <div className="button-container">
-            <button className="btn btn-primary mx-1" onClick={handlePlay}>
+      {/* Buttons */}
+      <div className="flex justify-center items-center mb-8">
+        <div className="text-center">
+          <div className="text-xl mb-4">
+            Time remaining:{" "}
+            <span className="text-indigo-600">{formattedTime}</span>
+          </div>
+          <div className="space-x-2">
+            <button
+              className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded"
+              onClick={handlePlay}
+            >
               Play
             </button>
-            <button className="btn btn-primary mx-1" onClick={handlePause}>
+            <button
+              className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded"
+              onClick={handlePause}
+            >
               Pause
             </button>
-            <button className="btn btn-primary mx-1" onClick={handleStop}>
+            <button
+              className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded"
+              onClick={handleStop}
+            >
               Stop
             </button>
-            <button className="btn btn-primary mx-1" onClick={handleBack}>
+            <button
+              className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded"
+              onClick={handleBack}
+            >
               Back
             </button>
-            <button className="btn btn-primary mx-1" onClick={handleNext}>
+            <button
+              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+              onClick={handleNext}
+            >
               Next
             </button>
           </div>
